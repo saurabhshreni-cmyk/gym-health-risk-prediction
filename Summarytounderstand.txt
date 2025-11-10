@@ -1,0 +1,114 @@
+📑 Project Summary — Gym Workout Health Risk Warning System
+1. Dataset Collection
+
+Source: Kaggle Fitbit Fitness Tracker dataset (mturkfitbit_export folders).
+
+Files included heart rate (heartrate_seconds_merged.csv), steps (hourlySteps_merged.csv), and calories (hourlyCalories_merged.csv).
+
+These were merged into a single dataset for analysis.
+
+2. Preprocessing
+
+Merged multiple files by aligning on time (hourly level).
+
+Dropped rows with missing values.
+
+Created a risk label (0 = safe, 1 = risky) based on simple thresholds:
+
+heart_rate > 160 bpm, or
+
+steps > 8000 per hour, or
+
+calories > 900 per hour.
+
+Class distribution: about ~2500 safe rows, only ~3 risky rows.
+
+This highlighted the class imbalance problem.
+
+3. Handling Class Imbalance
+
+Since only 3 risky examples existed, we applied upsampling of the minority class.
+
+This artificially increased risky cases (e.g., upsampled to 200 samples) so that ML models could learn the difference.
+
+Trade-off: Good for demo purposes, but may overfit due to lack of real risky data.
+
+4. Model Training
+
+Trained multiple models on features (heart_rate, steps, calories) vs. risk.
+
+Models tested:
+
+Logistic Regression
+
+Decision Tree
+
+Random Forest
+
+Evaluation metrics: Precision, Recall, F1-score, Accuracy.
+
+Upsampling allowed all models to perform “perfectly” on test splits (100% accuracy) — again, this is due to synthetic balance.
+
+5. Evaluation & Visualization
+
+Generated confusion matrices (raw and normalized).
+
+Plotted the ROC Curve and computed AUC to evaluate model separability.
+
+Example result: ROC AUC ≈ 0.97–1.00 (but optimistic due to upsampling).
+
+These plots show how well the model can distinguish between safe and risky workouts.
+
+6. Streamlit Dashboard
+
+You built an interactive web app using Streamlit for demonstration:
+
+Sliders: Adjust Heart Rate, Steps, and Calories.
+
+Model Prediction + Rule-based Safety Net:
+
+Model prediction (best_model.pkl).
+
+Simple rules (threshold checks) as backup.
+
+Final Decision Banner:
+
+Green ✅ Safe Workout
+
+Red ⚠️ Risky Workout
+
+7. Presenter Mode
+
+Added a Presenter Mode (fullscreen banner, no sidebar) for demo presentations.
+
+Shows only the final decision (SAFE vs RISKY) in large bold text, perfect for classroom/meeting display.
+
+8. Simplification for Report
+
+Stripped down UI to keep it clean.
+
+Final minimal version includes only:
+
+ROC Curve graph
+
+AUC value
+
+This demonstrates model performance clearly without distractions.
+
+🎯 Key Learnings / Talking Points
+
+End-to-end ML pipeline: dataset → preprocessing → labeling → model training → evaluation → deployment in Streamlit.
+
+Risk labeling: Based on exercise thresholds (heart rate, steps, calories).
+
+Imbalanced data: Only 3 risky cases → solved with upsampling (but you must mention this limitation).
+
+Visualization: Confusion matrix, ROC curve, AUC to evaluate performance.
+
+Deployment: Built a user-friendly Streamlit app with both interactive inputs and a presentation mode.
+
+Limitations: Real dataset had very few risky examples → model evaluation is not fully reliable. For production, we’d need more balanced, medical-grade data.
+
+✅ What you can say to your professor:
+
+“We collected Fitbit fitness data, created a risk label based on thresholds, handled the class imbalance with upsampling, trained multiple ML models, and evaluated them using confusion matrices and ROC/AUC. Finally, we built a Streamlit app that can take workout inputs and warn users if their workout is risky. We also added a presenter mode for demonstrations.”
